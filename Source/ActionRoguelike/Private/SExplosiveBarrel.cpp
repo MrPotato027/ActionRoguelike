@@ -3,14 +3,12 @@
 
 #include "SExplosiveBarrel.h"
 #include "PhysicsEngine/RadialForceComponent.h"
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 ASExplosiveBarrel::ASExplosiveBarrel()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
-	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>("MeshComp");
+ 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>("MeshComp");
 	MeshComp->SetSimulatePhysics(true);
 	MeshComp->SetCollisionProfileName("PhysicsActor");
 	MeshComp->OnComponentHit.AddDynamic(this, &ASExplosiveBarrel::OnCompHit);
@@ -21,25 +19,28 @@ ASExplosiveBarrel::ASExplosiveBarrel()
 	RadForceComp->ImpulseStrength = 2000;
 	RadForceComp->bImpulseVelChange = true;
 	RadForceComp->bAutoActivate = false;
+	RadForceComp->AddCollisionChannelToAffect(ECC_WorldDynamic);
 	RadForceComp->SetupAttachment(MeshComp);
 }
 
-// Called when the game starts or when spawned
-void ASExplosiveBarrel::BeginPlay()
+void ASExplosiveBarrel::PostInitializeComponents()
 {
-	Super::BeginPlay();
-	
+	Super::PostInitializeComponents();
+
+	//MeshComp->OnComponentHit.AddDynamic(this, &ASExplosiveBarrel::OnCompHit);
 }
 
 void ASExplosiveBarrel::OnCompHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	RadForceComp->FireImpulse();
+
+	UE_LOG(LogTemp, Log, TEXT("OnCompHit in Explosive Barrel"));
+
+	UE_LOG(LogTemp, Warning, TEXT("OtherActor: %s, at game time: %f"), *GetNameSafe(OtherActor), GetWorld()->TimeSeconds);
+
+	FString CombinedString = FString::Printf(TEXT("Hit at location: %s"), *Hit.ImpactPoint.ToString());
+	DrawDebugString(GetWorld(), Hit.ImpactPoint, CombinedString, nullptr, FColor::Green, 2.0f, true);
 }
 
-// Called every frame
-void ASExplosiveBarrel::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 
-}
 
