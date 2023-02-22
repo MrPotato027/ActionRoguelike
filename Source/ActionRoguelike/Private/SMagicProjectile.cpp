@@ -18,9 +18,9 @@ void ASMagicProjectile::OnMagicHit(UPrimitiveComponent* HitComp, AActor* OtherAc
 
 			UE_LOG(LogTemp, Log, TEXT("Projectile Apply Damage"));
 		}
-	}
 
-	Explode();
+		Explode();
+	}
 }
 
 // Sets default values
