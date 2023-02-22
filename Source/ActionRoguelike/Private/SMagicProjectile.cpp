@@ -7,9 +7,10 @@
 
 void ASMagicProjectile::OnMagicHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp, Log, TEXT("Projectile Hit"));
 	if (OtherActor && OtherActor != GetInstigator())
 	{
+		UE_LOG(LogTemp, Log, TEXT("Projectile Hit"));
+
 		USAttributeComponent* AttributeComp = Cast<USAttributeComponent>(OtherActor->GetComponentByClass(USAttributeComponent::StaticClass()));
 		if (AttributeComp)
 		{

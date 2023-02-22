@@ -69,6 +69,11 @@ protected:
 
 	void PrimaryInteract();
 
+	UFUNCTION()
+	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);
+
+	virtual void PostInitializeComponents() override;
+
 public:	
 	// Sets default values for this character's properties
 	ASCharacter();

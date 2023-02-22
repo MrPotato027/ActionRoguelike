@@ -27,9 +27,11 @@ ASProjectileBase::ASProjectileBase()
 
 void ASProjectileBase::OnActorHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp, Log, TEXT("BASEProjectile Hit"));
-	Explode();
-	GetActorLocation();
+	if (OtherActor && OtherActor != GetInstigator()) {
+		UE_LOG(LogTemp, Log, TEXT("BASEProjectile Hit"));
+		Explode();
+		GetActorLocation();
+	}
 }
 
 void ASProjectileBase::Explode_Implementation()
