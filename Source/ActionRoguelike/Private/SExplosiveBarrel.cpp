@@ -4,6 +4,7 @@
 #include "SExplosiveBarrel.h"
 #include "PhysicsEngine/RadialForceComponent.h"
 #include "DrawDebugHelpers.h"
+#include "SAttributeComponent.h"
 
 // Sets default values
 ASExplosiveBarrel::ASExplosiveBarrel()
@@ -32,7 +33,14 @@ void ASExplosiveBarrel::PostInitializeComponents()
 
 void ASExplosiveBarrel::OnCompHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	if (!OtherActor) return;
+
 	RadForceComp->FireImpulse();
+
+	USAttributeComponent* AttributeComp = OtherActor->FindComponentByClass<USAttributeComponent>();
+	if (AttributeComp) {
+		AttributeComp->ApplyHealthChange(-50.0f);
+	}
 
 	UE_LOG(LogTemp, Log, TEXT("OnCompHit in Explosive Barrel"));
 

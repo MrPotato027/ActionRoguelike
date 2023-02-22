@@ -33,7 +33,7 @@ protected:
 	// Category = "" - display only for detail panels and blueprint context menu.
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
-		float Health;
+	float Health;
 
 	// HealthMax, Stamina, Strength
 
@@ -43,6 +43,6 @@ public:
 	FOnHealthChanged OnHealthChanged;
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
-		bool ApplyHealthChange(float Delta);
+	bool ApplyHealthChange(float Delta);
 
 };
