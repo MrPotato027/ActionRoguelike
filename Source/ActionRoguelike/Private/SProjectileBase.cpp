@@ -23,6 +23,10 @@ ASProjectileBase::ASProjectileBase()
 	MoveComp->bInitialVelocityInLocalSpace = true;
 	MoveComp->ProjectileGravityScale = 0.0f;
 	MoveComp->InitialSpeed = 8000;
+
+	CamShakeInnerRadius = 20.0f;
+	CamShakeOuterRadius = 60.0f;
+	CamShakeFallOff = 1.0f;
 }
 
 void ASProjectileBase::BeginPlay()
@@ -37,7 +41,7 @@ void ASProjectileBase::OnActorHit(UPrimitiveComponent* HitComp, AActor* OtherAct
 	if (OtherActor && OtherActor != GetInstigator()) {
 		UE_LOG(LogTemp, Log, TEXT("BASEProjectile Hit"));
 		Explode();
-		GetActorLocation();
+		//GetActorLocation();
 	}
 }
 
@@ -45,6 +49,8 @@ void ASProjectileBase::Explode_Implementation()
 {
 	if (ensure(!IsPendingKill())) {
 		UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation());
+
+		UGameplayStatics::PlayWorldCameraShake(GetWorld(), CamShake, GetActorLocation(), CamShakeInnerRadius, CamShakeOuterRadius, CamShakeFallOff);
 
 		Destroy();
 	}

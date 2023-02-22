@@ -18,6 +18,18 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	UParticleSystem* ImpactVFX;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	TSubclassOf<UCameraShakeBase> CamShake;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	float CamShakeInnerRadius;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	float CamShakeOuterRadius;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	float CamShakeFallOff;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USphereComponent* SphereComp;
 

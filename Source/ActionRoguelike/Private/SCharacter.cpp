@@ -135,6 +135,8 @@ void ASCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 	{
 		FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 
+		UGameplayStatics::SpawnEmitterAttached(MuzzleVFX, GetMesh(), "Muzzle_01");
+
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		SpawnParams.Instigator = this;
