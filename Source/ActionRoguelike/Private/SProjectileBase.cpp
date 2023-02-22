@@ -25,6 +25,13 @@ ASProjectileBase::ASProjectileBase()
 	MoveComp->InitialSpeed = 8000;
 }
 
+void ASProjectileBase::BeginPlay()
+{
+	Super::BeginPlay();
+
+	SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);
+}
+
 void ASProjectileBase::OnActorHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (OtherActor && OtherActor != GetInstigator()) {

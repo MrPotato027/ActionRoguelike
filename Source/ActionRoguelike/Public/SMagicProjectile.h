@@ -6,6 +6,8 @@
 #include "SProjectileBase.h"
 #include "SMagicProjectile.generated.h"
 
+class UAudioComponent;
+
 UCLASS()
 class ACTIONROGUELIKE_API ASMagicProjectile : public ASProjectileBase
 {
@@ -15,6 +17,12 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	float DamageAmount;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Audio")
+	UAudioComponent* AudioComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Audio")
+	UAudioComponent* ImpactAudioComp;
 
 	//UFUNCTION()
 	//void OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

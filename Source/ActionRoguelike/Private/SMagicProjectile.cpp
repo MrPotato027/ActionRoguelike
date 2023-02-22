@@ -4,6 +4,8 @@
 #include "SMagicProjectile.h"
 #include "SAttributeComponent.h"
 #include "Components/SphereComponent.h"
+#include "Components/AudioComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 void ASMagicProjectile::OnMagicHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
@@ -21,6 +23,9 @@ void ASMagicProjectile::OnMagicHit(UPrimitiveComponent* HitComp, AActor* OtherAc
 		}
 
 		Explode();
+
+		//ImpactAudioComp->Play();
+		UGameplayStatics::PlaySoundAtLocation(this, ImpactAudioComp->Sound, GetActorLocation(), GetActorRotation(), 1.0f, 1.0f, 0.0f);
 	}
 }
 
@@ -31,6 +36,10 @@ ASMagicProjectile::ASMagicProjectile()
 	//SphereComp->OnComponentBeginOverlap.AddDynamic(this, &ASMagicProjectile::OnActorOverlap);
 	SphereComp->OnComponentHit.Clear();
 	SphereComp->OnComponentHit.AddDynamic(this, &ASMagicProjectile::OnMagicHit);
+
+	AudioComp = CreateDefaultSubobject<UAudioComponent>("AudioComp");
+	ImpactAudioComp = CreateDefaultSubobject<UAudioComponent>("ImpactAudioComp");
+	ImpactAudioComp->bAutoActivate = false;
 
 	DamageAmount = 20.0f;
 }
