@@ -16,7 +16,7 @@ EBTNodeResult::Type USBTTask_Heal::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 		if (ensure(MyCharacter)) {
 			USAttributeComponent* AttributeComp = MyCharacter->FindComponentByClass<USAttributeComponent>();
 			if (ensure(AttributeComp)) {
-				AttributeComp->ApplyHealthChange(AmountToHeal);
+				AttributeComp->ApplyHealthChange(nullptr, AmountToHeal);
 				return EBTNodeResult::Succeeded;
 			}
 		}

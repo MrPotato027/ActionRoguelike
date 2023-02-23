@@ -19,9 +19,6 @@ protected:
 	float DamageAmount;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Audio")
-	UAudioComponent* AudioComp;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Audio")
 	UAudioComponent* ImpactAudioComp;
 
 	//UFUNCTION()

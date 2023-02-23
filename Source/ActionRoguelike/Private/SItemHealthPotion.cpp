@@ -25,7 +25,7 @@ void ASItemHealthPotion::Interact_Implementation(APawn* InstigatorPawn)
 			if (AttributeComp->IsHealthAtMax()) return;
 
 			Mesh->SetVisibility(false);
-			AttributeComp->ApplyHealthChange(AmountToHeal);
+			AttributeComp->ApplyHealthChange(this, AmountToHeal);
 			bIsActive = false;
 			GetWorldTimerManager().SetTimer(TimerHandle_HealthPot, this, &ASItemHealthPotion::Active_TimeElapsed, ActiveDelay);
 		}

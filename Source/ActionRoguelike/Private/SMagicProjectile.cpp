@@ -17,7 +17,7 @@ void ASMagicProjectile::OnMagicHit(UPrimitiveComponent* HitComp, AActor* OtherAc
 		if (AttributeComp)
 		{
 			// minus in front of DamageAmount to apply the change as damage, not healing
-			AttributeComp->ApplyHealthChange(-DamageAmount);
+			AttributeComp->ApplyHealthChange(GetInstigator(), -DamageAmount);
 
 			UE_LOG(LogTemp, Log, TEXT("Projectile Apply Damage"));
 		}
@@ -37,9 +37,9 @@ ASMagicProjectile::ASMagicProjectile()
 	SphereComp->OnComponentHit.Clear();
 	SphereComp->OnComponentHit.AddDynamic(this, &ASMagicProjectile::OnMagicHit);
 
-	AudioComp = CreateDefaultSubobject<UAudioComponent>("AudioComp");
 	ImpactAudioComp = CreateDefaultSubobject<UAudioComponent>("ImpactAudioComp");
 	ImpactAudioComp->bAutoActivate = false;
+	ImpactAudioComp->SetupAttachment(SphereComp);
 
 	DamageAmount = 20.0f;
 }

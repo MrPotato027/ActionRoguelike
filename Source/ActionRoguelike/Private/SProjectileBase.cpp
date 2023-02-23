@@ -6,6 +6,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "particles/ParticleSystemComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/AudioComponent.h"
 
 // Sets default values
 ASProjectileBase::ASProjectileBase()
@@ -18,14 +19,17 @@ ASProjectileBase::ASProjectileBase()
 	EffectComp = CreateDefaultSubobject<UParticleSystemComponent>("EffectComp");
 	EffectComp->SetupAttachment(SphereComp);
 
+	AudioComp = CreateDefaultSubobject<UAudioComponent>("AudioComp");
+	AudioComp->SetupAttachment(SphereComp);
+
 	MoveComp = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMoveComp");
 	MoveComp->bRotationFollowsVelocity = true;
 	MoveComp->bInitialVelocityInLocalSpace = true;
 	MoveComp->ProjectileGravityScale = 0.0f;
 	MoveComp->InitialSpeed = 8000;
 
-	CamShakeInnerRadius = 20.0f;
-	CamShakeOuterRadius = 60.0f;
+	CamShakeInnerRadius = 0.0f;
+	CamShakeOuterRadius = 1500.0f;
 	CamShakeFallOff = 1.0f;
 }
 

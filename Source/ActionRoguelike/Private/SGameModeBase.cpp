@@ -8,6 +8,7 @@
 #include "SCharacter.h"
 #include "AI/SAICharacter.h"
 #include "EngineUtils.h"
+#include "DrawDebugHelpers.h"
 
 ASGameModeBase::ASGameModeBase()
 {
@@ -23,6 +24,27 @@ void ASGameModeBase::StartPlay()
 
 void ASGameModeBase::SpawnBotTimerElapsed()
 {
+	int32 NrOfAliveBots = 0;
+	for (TActorIterator<ASAICharacter> It(GetWorld()); It; ++It) {
+		ASAICharacter* Bot = *It;
+
+		if (Bot->IsAlive()) {
+			NrOfAliveBots++;
+		}
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("Found %i alive bots."), NrOfAliveBots);
+
+	float MaxBotCount = 10.0f;
+	if (DifficultyCurve) {
+		MaxBotCount = DifficultyCurve->GetFloatValue(GetWorld()->TimeSeconds);
+	}
+
+	if (NrOfAliveBots >= MaxBotCount) {
+		UE_LOG(LogTemp, Log, TEXT("At maximum bot capacity. Skipping bot spawn."));
+		return;
+	}
+
 	UEnvQueryInstanceBlueprintWrapper* QueryInstance = UEnvQueryManager::RunEQSQuery(this, SpawnBotQuery, this, EEnvQueryRunMode::RandomBest5Pct, nullptr);
 	if (ensure(QueryInstance)) {
 		QueryInstance->GetOnQueryFinishedEvent().AddDynamic(this, &ASGameModeBase::OnQueryCompleted);
@@ -36,24 +58,6 @@ void ASGameModeBase::OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryIn
 		return;
 	}
 
-	int32 NrOfAliveBots = 0;
-	for (TActorIterator<ASAICharacter> It(GetWorld()); It; ++It) {
-		ASAICharacter* Bot = *It;
-
-		if (Bot->IsAlive()) {
-			NrOfAliveBots++;
-		}
-	}
-
-	float MaxBotCount = 10.0f;
-	if (DifficultyCurve) {
-		MaxBotCount = DifficultyCurve->GetFloatValue(GetWorld()->TimeSeconds);
-	}
-
-	if (NrOfAliveBots >= MaxBotCount) {
-		return;
-	}
-
 	if (DifficultyCurve) {
 		DifficultyCurve->GetFloatValue(GetWorld()->TimeSeconds);
 	}
@@ -62,5 +66,7 @@ void ASGameModeBase::OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryIn
 
 	if (Locations.Num() > 0) {
 		GetWorld()->SpawnActor<AActor>(MinionClass, Locations[0], FRotator::ZeroRotator);
+
+		DrawDebugSphere(GetWorld(), Locations[0], 50.0f, 20, FColor::Blue, false, 60.0f);
 	}
 }

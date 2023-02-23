@@ -39,7 +39,7 @@ void ASExplosiveBarrel::OnCompHit(UPrimitiveComponent* HitComp, AActor* OtherAct
 
 	USAttributeComponent* AttributeComp = OtherActor->FindComponentByClass<USAttributeComponent>();
 	if (AttributeComp) {
-		AttributeComp->ApplyHealthChange(-50.0f);
+		AttributeComp->ApplyHealthChange(this, -50.0f);
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("OnCompHit in Explosive Barrel"));

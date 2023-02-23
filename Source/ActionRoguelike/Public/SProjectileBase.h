@@ -18,6 +18,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	UParticleSystem* ImpactVFX;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Audio")
+	UAudioComponent* AudioComp;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	TSubclassOf<UCameraShakeBase> CamShake;
 

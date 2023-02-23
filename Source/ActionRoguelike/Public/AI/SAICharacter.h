@@ -22,6 +22,9 @@ public:
 protected:
 	virtual void PostInitializeComponents() override;
 
+	UFUNCTION()
+	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);
+
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UPawnSensingComponent* PawnSensingComp;
 
@@ -30,5 +33,7 @@ protected:
 
 	UFUNCTION()
 	void OnPawnSeen(APawn* Pawn);
+
+	void SetTargetActor(AActor* NewTarget);
 
 };
