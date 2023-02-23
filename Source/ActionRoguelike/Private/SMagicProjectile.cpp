@@ -6,11 +6,13 @@
 #include "Components/SphereComponent.h"
 #include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include <SGameplayFunctionLibrary.h>
 
 void ASMagicProjectile::OnMagicHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (OtherActor && OtherActor != GetInstigator())
 	{
+		/*
 		UE_LOG(LogTemp, Log, TEXT("Projectile Hit"));
 
 		USAttributeComponent* AttributeComp = Cast<USAttributeComponent>(OtherActor->GetComponentByClass(USAttributeComponent::StaticClass()));
@@ -20,6 +22,13 @@ void ASMagicProjectile::OnMagicHit(UPrimitiveComponent* HitComp, AActor* OtherAc
 			AttributeComp->ApplyHealthChange(GetInstigator(), -DamageAmount);
 
 			UE_LOG(LogTemp, Log, TEXT("Projectile Apply Damage"));
+		}
+
+		Explode();
+		*/
+
+		if (USGameplayFunctionLibrary::ApplyDirectionalDamage(GetInstigator(), OtherActor, DamageAmount, Hit)) {
+			//Explode();
 		}
 
 		Explode();
