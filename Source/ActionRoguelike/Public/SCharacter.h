@@ -73,6 +73,8 @@ protected:
 
 	void PrimaryInteract();
 
+	void StartAttackEffects();
+
 	UFUNCTION()
 	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);
 

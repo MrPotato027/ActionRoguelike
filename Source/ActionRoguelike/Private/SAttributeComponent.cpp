@@ -21,6 +21,11 @@ bool USAttributeComponent::IsHealthAtMax() const
 	return Health == HealthMax;
 }
 
+float USAttributeComponent::GetActualPercentHealth() const
+{
+	return Health / HealthMax;
+}
+
 bool USAttributeComponent::ApplyHealthChange(float Delta)
 {
 	Health += Delta;

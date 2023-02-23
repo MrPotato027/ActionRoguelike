@@ -47,6 +47,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsHealthAtMax() const;
 
+	UFUNCTION(BlueprintCallable)
+	float GetActualPercentHealth() const;
+
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
 
