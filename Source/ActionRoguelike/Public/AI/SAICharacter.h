@@ -17,6 +17,8 @@ class ACTIONROGUELIKE_API ASAICharacter : public ACharacter
 public:
 	ASAICharacter();
 
+	bool IsAlive() const;
+
 protected:
 	virtual void PostInitializeComponents() override;
 
