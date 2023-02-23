@@ -8,6 +8,8 @@
 
 class UPawnSensingComponent;
 class USAttributeComponent;
+class UUserWidget;
+class USWorldUserWidget;
 
 UCLASS()
 class ACTIONROGUELIKE_API ASAICharacter : public ACharacter
@@ -18,6 +20,8 @@ public:
 	ASAICharacter();
 
 	bool IsAlive() const;
+
+	bool Kill(AActor* InstigatorActor);
 
 protected:
 	virtual void PostInitializeComponents() override;
@@ -30,6 +34,11 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USAttributeComponent* AttributeComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UUserWidget> HealthBarWidgetClass;
+
+	USWorldUserWidget* ActiveHealthBar;
 
 	UFUNCTION()
 	void OnPawnSeen(APawn* Pawn);

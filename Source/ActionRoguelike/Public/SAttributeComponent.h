@@ -50,6 +50,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	float GetActualPercentHealth() const;
 
+	UFUNCTION(BlueprintCallable)
+	bool Kill(AActor* InstigatorActor);
+
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
 

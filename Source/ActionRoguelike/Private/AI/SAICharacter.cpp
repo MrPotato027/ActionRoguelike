@@ -8,6 +8,8 @@
 #include "DrawDebugHelpers.h"
 #include "SAttributeComponent.h"
 #include "BrainComponent.h"
+#include <Subsystems/PanelExtensionSubsystem.h>
+#include <SWorldUserWidget.h>
 
 // Sets default values
 ASAICharacter::ASAICharacter()
@@ -24,6 +26,11 @@ bool ASAICharacter::IsAlive() const
 	return AttributeComp->IsAlive();
 }
 
+bool ASAICharacter::Kill(AActor* InstigatorActor)
+{
+	return AttributeComp->Kill(InstigatorActor);
+}
+
 void ASAICharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
@@ -38,6 +45,14 @@ void ASAICharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponen
 	if (Delta < 0.0f) {
 		if (InstigatorActor != this) {
 			SetTargetActor(InstigatorActor);
+		}
+
+		if (ActiveHealthBar == nullptr) {
+			ActiveHealthBar = CreateWidget<USWorldUserWidget>(GetWorld(), HealthBarWidgetClass, TEXT("HealthBarWidget"));
+			if (ActiveHealthBar) {
+				ActiveHealthBar->AttachedActor = this;
+				ActiveHealthBar->AddToViewport();
+			}
 		}
 
 		GetMesh()->SetScalarParameterValueOnMaterials("TimeToHit", GetWorld()->TimeSeconds);
