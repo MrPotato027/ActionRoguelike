@@ -11,6 +11,8 @@ ASPickUpItem::ASPickUpItem()
 
 	ActiveDelay = 10.0f;
 	bIsActive = true;
+
+	SetReplicates(true);
 }
 
 void ASPickUpItem::Interact_Implementation(APawn* InstigatorPawn)
