@@ -5,10 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "SGameplayInterface.h"
+#include "SPickUpItem.h"
 #include "SItemHealthPotion.generated.h"
 
 UCLASS()
-class ACTIONROGUELIKE_API ASItemHealthPotion : public AActor, public ISGameplayInterface
+class ACTIONROGUELIKE_API ASItemHealthPotion : public ASPickUpItem
 {
 	GENERATED_BODY()
 	
@@ -16,23 +17,23 @@ public:
 	// Sets default values for this actor's properties
 	ASItemHealthPotion();
 
-	void Interact_Implementation(APawn* InstigatorPawn);
+	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* Mesh;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	//UStaticMeshComponent* Mesh;
 	
 	UPROPERTY(EditDefaultsOnly)
 	float AmountToHeal;
 
-	UPROPERTY(EditDefaultsOnly)
-	float ActiveDelay;
+	//UPROPERTY(EditDefaultsOnly)
+	//float ActiveDelay;
 
-	bool bIsActive;
+	//bool bIsActive;
 
-	FTimerHandle TimerHandle_HealthPot;
+	//FTimerHandle TimerHandle_HealthPot;
 
-	UFUNCTION()
-	void Active_TimeElapsed();
+	//UFUNCTION()
+	//void Active_TimeElapsed();
 
 };

@@ -9,6 +9,7 @@
 #include "AI/SAICharacter.h"
 #include "EngineUtils.h"
 #include "DrawDebugHelpers.h"
+#include "SPlayerState.h"
 
 
 static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("su.SpawnBots"), true, TEXT("Enable spawning of bots via timer."), ECVF_Cheat);
@@ -111,6 +112,14 @@ void ASGameModeBase::OnActorKilled(AActor* VictimActor, AActor* Killer)
 
 		float RespawnDelay = 2.0f;
 		GetWorldTimerManager().SetTimer(TimerHandle_RespawnDelay, Delegate, RespawnDelay, false);
+	}
+
+	Player = Cast<ASCharacter>(Killer);
+	if (Player) {
+		ASPlayerState* PlayerState = Cast<ASPlayerState>(Player->GetPlayerState());
+		if (PlayerState) {
+			PlayerState->AddCredits();
+		}
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("OnActorKilled: Victim: %s, Killer: %s"), *GetNameSafe(VictimActor), *GetNameSafe(Killer));
