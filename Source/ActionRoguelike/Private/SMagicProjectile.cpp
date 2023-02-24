@@ -7,6 +7,8 @@
 #include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include <SGameplayFunctionLibrary.h>
+#include "SActionComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 void ASMagicProjectile::OnMagicHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
@@ -26,6 +28,14 @@ void ASMagicProjectile::OnMagicHit(UPrimitiveComponent* HitComp, AActor* OtherAc
 
 		Explode();
 		*/
+
+		USActionComponent* ActionComp = Cast<USActionComponent>(OtherActor->GetComponentByClass(USActionComponent::StaticClass()));
+		if (ActionComp && ActionComp->ActiveGameplayTags.HasTag(ParryTag)) {
+			MoveComp->Velocity = -MoveComp->Velocity;
+
+			SetInstigator(Cast<APawn>(OtherActor));
+			return;
+		}
 
 		if (USGameplayFunctionLibrary::ApplyDirectionalDamage(GetInstigator(), OtherActor, DamageAmount, Hit)) {
 			//Explode();

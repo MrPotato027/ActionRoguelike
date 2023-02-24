@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "SProjectileBase.h"
+#include "GameplayTagContainer.h"
 #include "SMagicProjectile.generated.h"
 
 class UAudioComponent;
@@ -17,6 +18,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	float DamageAmount;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	FGameplayTag ParryTag;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Audio")
 	UAudioComponent* ImpactAudioComp;
