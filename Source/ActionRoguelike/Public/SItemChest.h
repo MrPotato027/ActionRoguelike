@@ -22,6 +22,12 @@ public:
 	void Interact_Implementation(APawn* InstigatorPawn);
 
 protected:
+	UPROPERTY(ReplicatedUsing="OnRep_LidOpened")
+	bool bLidOpened;
+
+	UFUNCTION()
+	void OnRep_LidOpened();
+
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* BaseMesh;
 
@@ -35,7 +41,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Sets default values for this actor's properties
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
+
 	ASItemChest();
 
 };
