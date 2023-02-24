@@ -9,6 +9,7 @@
 #include <SGameplayFunctionLibrary.h>
 #include "SActionComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "SActionEffect.h"
 
 void ASMagicProjectile::OnMagicHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
@@ -42,6 +43,10 @@ void ASMagicProjectile::OnMagicHit(UPrimitiveComponent* HitComp, AActor* OtherAc
 		}
 
 		Explode();
+
+		if (ActionComp) {
+			ActionComp->AddAction(GetInstigator(), BurningActionClass);
+		}
 
 		//ImpactAudioComp->Play();
 		UGameplayStatics::PlaySoundAtLocation(this, ImpactAudioComp->Sound, GetActorLocation(), GetActorRotation(), 1.0f, 1.0f, 0.0f);
