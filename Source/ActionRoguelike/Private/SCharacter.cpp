@@ -8,6 +8,7 @@
 #include "SInteractionComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "SAttributeComponent.h"
+#include "SActionComponent.h"
 
 // Sets default values
 ASCharacter::ASCharacter()
@@ -25,6 +26,8 @@ ASCharacter::ASCharacter()
 	InteractionComp = CreateDefaultSubobject<USInteractionComponent>("InteractionComp");
 
 	AttributeComp = CreateDefaultSubobject<USAttributeComponent>("AttributeComp");
+
+	ActionComp = CreateDefaultSubobject<USActionComponent>("ActionComp");
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
@@ -65,11 +68,23 @@ void ASCharacter::MoveRight(float Value)
 	AddMovementInput(RightVector, Value);
 }
 
+void ASCharacter::SprintStart()
+{
+	ActionComp->StartActionByName(this, "Sprint");
+}
+
+void ASCharacter::SprintStop()
+{
+	ActionComp->StopActionByName(this, "Sprint");
+}
+
 void ASCharacter::PrimaryAttack()
 {
-	StartAttackEffects();
+	//StartAttackEffects();
 
-	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &ASCharacter::PrimaryAttack_TimeElapsed, AttackAnimDelay);
+	//GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &ASCharacter::PrimaryAttack_TimeElapsed, AttackAnimDelay);
+
+	ActionComp->StartActionByName(this, "PrimaryAttack");
 }
 
 void ASCharacter::PrimaryAttack_TimeElapsed()
@@ -112,9 +127,11 @@ void ASCharacter::PrimaryAttack_TimeElapsed()
 
 void ASCharacter::BlackHoleAttack()
 {
-	StartAttackEffects();
+	//StartAttackEffects();
 
-	GetWorldTimerManager().SetTimer(TimerHandle_BlackholeAttack, this, &ASCharacter::BlackholeAttack_TimeElapsed, AttackAnimDelay);
+	//GetWorldTimerManager().SetTimer(TimerHandle_BlackholeAttack, this, &ASCharacter::BlackholeAttack_TimeElapsed, AttackAnimDelay);
+
+	ActionComp->StartActionByName(this, "Blackhole");
 }
 
 void ASCharacter::BlackholeAttack_TimeElapsed()
@@ -124,9 +141,11 @@ void ASCharacter::BlackholeAttack_TimeElapsed()
 
 void ASCharacter::Dash()
 {
-	StartAttackEffects();
+	//StartAttackEffects();
 
-	GetWorldTimerManager().SetTimer(TimerHandle_Dash, this, &ASCharacter::Dash_TimeElapsed, AttackAnimDelay);
+	//GetWorldTimerManager().SetTimer(TimerHandle_Dash, this, &ASCharacter::Dash_TimeElapsed, AttackAnimDelay);
+
+	ActionComp->StartActionByName(this, "Dash");
 }
 
 void ASCharacter::Dash_TimeElapsed()
@@ -220,6 +239,9 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ASCharacter::PrimaryAttack);
 	PlayerInputComponent->BindAction("SecondaryAttack", IE_Pressed, this, &ASCharacter::BlackHoleAttack);
 	PlayerInputComponent->BindAction("Dash", IE_Pressed, this, &ASCharacter::Dash);
+
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ASCharacter::SprintStart);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ASCharacter::SprintStop);
 
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASCharacter::Jump);
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &ASCharacter::PrimaryInteract);

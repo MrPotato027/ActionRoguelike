@@ -11,6 +11,7 @@ class USpringArmComponent;
 class USInteractionComponent;
 class USAttributeComponent;
 class UMatineeCameraShake;
+class USActionComponent;
 
 UCLASS()
 class ACTIONROGUELIKE_API ASCharacter : public ACharacter
@@ -49,12 +50,19 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USAttributeComponent* AttributeComp;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USActionComponent* ActionComp;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	UParticleSystem* MuzzleVFX;
 
 	void MoveForward(float Value);
 
 	void MoveRight(float Value);
+
+	void SprintStart();
+
+	void SprintStop();
 
 	void PrimaryAttack();
 
