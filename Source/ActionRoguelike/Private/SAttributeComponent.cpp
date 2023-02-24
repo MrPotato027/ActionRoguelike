@@ -14,6 +14,9 @@ USAttributeComponent::USAttributeComponent()
 {
 	HealthMax = 100;
 	Health = HealthMax;
+
+	RageMax = 100;
+	Rage = 0;
 }
 
 
@@ -32,6 +35,16 @@ float USAttributeComponent::GetActualPercentHealth() const
 	return Health / HealthMax;
 }
 
+bool USAttributeComponent::SpendRage(float Amount)
+{
+	if (Amount <= Rage) {
+		Rage -= Amount;
+		return true;
+	}
+
+	return false;
+}
+
 bool USAttributeComponent::Kill(AActor* InstigatorActor)
 {
 	return ApplyHealthChange(InstigatorActor, -HealthMax);
@@ -46,6 +59,8 @@ bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delt
 	if (Delta < 0.0f) {
 		float DamageMultiplier = CVarDamageMultiplier.GetValueOnGameThread();
 		Delta *= DamageMultiplier;
+
+		Rage = FMath::Clamp(Rage - Delta, 0.f, RageMax);
 	}
 
 	float oldHealth = Health;
@@ -53,7 +68,7 @@ bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delt
 	Health = FMath::Clamp(Health + Delta, 0.0f, HealthMax);
 
 	float ActualDelta = Health - oldHealth;
-	OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta);
+	OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta, Rage);
 
 	//Died
 	if (ActualDelta < 0.0f && Health == 0.0f) {

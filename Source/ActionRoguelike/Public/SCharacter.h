@@ -26,6 +26,9 @@ protected:
 	TSubclassOf<AActor> BlackHoleProjectileClass;
 
 	UPROPERTY(EditAnywhere, Category = "Attack")
+	float BlackHoleRageCost;
+
+	UPROPERTY(EditAnywhere, Category = "Attack")
 	TSubclassOf<AActor> DashProjectileClass;
 
 	UPROPERTY(EditAnywhere, Category = "Attack")
@@ -84,7 +87,7 @@ protected:
 	void StartAttackEffects();
 
 	UFUNCTION()
-	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);
+	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta, float NewRage);
 
 	virtual void PostInitializeComponents() override;
 

@@ -7,7 +7,7 @@
 #include "SAttributeComponent.generated.h"
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChanged, AActor*, InstigatorActor, USAttributeComponent*, OwningComp, float, NewHealth, float, Delta);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(FOnHealthChanged, AActor*, InstigatorActor, USAttributeComponent*, OwningComp, float, NewHealth, float, Delta, float, NewRage);
 
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -38,7 +38,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
 	float HealthMax;
 
-	// HealthMax, Stamina, Strength
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
+	float Rage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
+	float RageMax;
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -49,6 +53,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	float GetActualPercentHealth() const;
+
+	bool SpendRage(float Amount);
 
 	UFUNCTION(BlueprintCallable)
 	bool Kill(AActor* InstigatorActor);

@@ -34,6 +34,8 @@ ASCharacter::ASCharacter()
 	bUseControllerRotationYaw = false;
 
 	AttackAnimDelay = 0.2f;
+
+	BlackHoleRageCost = 10;
 }
 
 void ASCharacter::PostInitializeComponents()
@@ -130,8 +132,9 @@ void ASCharacter::BlackHoleAttack()
 	//StartAttackEffects();
 
 	//GetWorldTimerManager().SetTimer(TimerHandle_BlackholeAttack, this, &ASCharacter::BlackholeAttack_TimeElapsed, AttackAnimDelay);
-
-	ActionComp->StartActionByName(this, "Blackhole");
+	if (AttributeComp->SpendRage(BlackHoleRageCost)) {
+		ActionComp->StartActionByName(this, "Blackhole");
+	}
 }
 
 void ASCharacter::BlackholeAttack_TimeElapsed()
@@ -213,7 +216,7 @@ void ASCharacter::StartAttackEffects()
 	UGameplayStatics::SpawnEmitterAttached(MuzzleVFX, GetMesh(), "Muzzle_01", FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget);
 }
 
-void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta)
+void ASCharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta, float NewRage)
 {
 	if (Delta < 0.0f) {
 		GetMesh()->SetScalarParameterValueOnMaterials("TimeToHit", GetWorld()->TimeSeconds);
