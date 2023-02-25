@@ -3,6 +3,7 @@
 
 #include "SAttributeComponent.h"
 #include <SGameModeBase.h>
+#include <Net/UnrealNetwork.h>
 
 
 static TAutoConsoleVariable<float> CVarDamageMultiplier(TEXT("su.DamageMultiplier"), 1.0f, TEXT("Global Damage Modifier for Attribute Component."), ECVF_Cheat);
@@ -17,8 +18,9 @@ USAttributeComponent::USAttributeComponent()
 
 	RageMax = 100;
 	Rage = 0;
-}
 
+	SetIsReplicatedByDefault(true);
+}
 
 bool USAttributeComponent::IsAlive() const
 {
@@ -68,7 +70,9 @@ bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delt
 	Health = FMath::Clamp(Health + Delta, 0.0f, HealthMax);
 
 	float ActualDelta = Health - oldHealth;
-	OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta, Rage);
+	//OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta, Rage);
+
+	MulticastHealthChanged(InstigatorActor, Health, ActualDelta, Rage);
 
 	//Died
 	if (ActualDelta < 0.0f && Health == 0.0f) {
@@ -98,3 +102,25 @@ bool USAttributeComponent::IsActorAlive(AActor* Actor)
 	}
 	return false;
 }
+
+void USAttributeComponent::MulticastHealthChanged_Implementation(AActor* InstigatorActor, float NewHealth, float Delta, float NewRage)
+{
+	//OnHealthChanged.Broadcast(InstigatorActor, NewHealth, Delta);
+	OnHealthChanged.Broadcast(InstigatorActor, this, NewHealth, Delta, NewRage);
+}
+
+void USAttributeComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	FDoRepLifetimeParams SharedParams;
+	SharedParams.bIsPushBased = true;
+
+	DOREPLIFETIME_WITH_PARAMS_FAST(USAttributeComponent, Health, SharedParams);
+	DOREPLIFETIME_WITH_PARAMS_FAST(USAttributeComponent, HealthMax, SharedParams);
+	//DOREPLIFETIME_CONDITION(USAttributeComponent, HealthMax, COND_InitialOnly);
+
+	DOREPLIFETIME_WITH_PARAMS_FAST(USAttributeComponent, Rage, SharedParams);
+	DOREPLIFETIME_WITH_PARAMS_FAST(USAttributeComponent, RageMax, SharedParams);
+}
+

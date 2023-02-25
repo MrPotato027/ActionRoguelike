@@ -32,7 +32,7 @@ ASProjectileBase::ASProjectileBase()
 	CamShakeOuterRadius = 1500.0f;
 	CamShakeFallOff = 1.0f;
 
-	SetReplicates(true);
+	//SetReplicates(true);
 }
 
 void ASProjectileBase::BeginPlay()

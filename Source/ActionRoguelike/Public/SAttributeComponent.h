@@ -32,17 +32,20 @@ protected:
 	// --
 	// Category = "" - display only for detail panels and blueprint context menu.
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Replicated, Category = "Attributes")
 	float Health;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Replicated, Category = "Attributes")
 	float HealthMax;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Replicated, Category = "Attributes")
 	float Rage;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Replicated, Category = "Attributes")
 	float RageMax;
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastHealthChanged(AActor* InstigatorActor, float NewHealth, float Delta, float NewRage);
 
 public:
 	UFUNCTION(BlueprintCallable)
