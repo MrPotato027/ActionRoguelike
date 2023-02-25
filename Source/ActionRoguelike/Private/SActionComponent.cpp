@@ -11,7 +11,7 @@ USActionComponent::USActionComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
+	SetIsReplicatedByDefault(true);
 }
 
 void USActionComponent::AddAction(AActor* Intigator, TSubclassOf<USAction> ActionClass)
@@ -49,6 +49,10 @@ bool USActionComponent::StartActionByName(AActor* Instigator, FName ActionName)
 				continue;
 			}
 
+			if (!GetOwner()->HasAuthority()) {
+				ServerStartAction(Instigator, ActionName);
+			}
+
 			Action->StartAction(Instigator);
 			return true;
 		}
@@ -71,7 +75,6 @@ bool USActionComponent::StopActionByName(AActor* Instigator, FName ActionName)
 	return false;
 }
 
-
 // Called when the game starts
 void USActionComponent::BeginPlay()
 {
@@ -91,5 +94,10 @@ void USActionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 
 	FString DebugMsg = GetNameSafe(GetOwner()) + " : " + ActiveGameplayTags.ToStringSimple();
 	GEngine->AddOnScreenDebugMessage(-1, 0.f, FColor::White, DebugMsg);
+}
+
+void USActionComponent::ServerStartAction_Implementation(AActor* Instigator, FName ActionName)
+{
+	StartActionByName(Instigator, ActionName);
 }
 
