@@ -44,7 +44,7 @@ void ASMagicProjectile::OnMagicHit(UPrimitiveComponent* HitComp, AActor* OtherAc
 
 		Explode();
 
-		if (ActionComp) {
+		if (ActionComp && HasAuthority()) {
 			ActionComp->AddAction(GetInstigator(), BurningActionClass);
 		}
 
