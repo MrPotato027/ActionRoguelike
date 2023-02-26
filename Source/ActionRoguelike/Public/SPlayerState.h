@@ -15,7 +15,7 @@ class ACTIONROGUELIKE_API ASPlayerState : public APlayerState
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(ReplicatedUsing = OnRep_Credits, BlueprintReadOnly, Category = PlayerState)
+	UPROPERTY(ReplicatedUsing = OnRep_Credits, BlueprintReadOnly, Category = "PlayerState")
 	int32 Credits;
 
 public:

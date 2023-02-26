@@ -6,6 +6,8 @@
 #include "SActionEffect.h"
 #include "SActionEffect_ThornsBuff.generated.h"
 
+class USAttributeComponent;
+
 /**
  * 
  */

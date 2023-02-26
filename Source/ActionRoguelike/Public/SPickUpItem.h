@@ -27,11 +27,17 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	float ActiveDelay;
 
+	UPROPERTY(ReplicatedUsing = OnRep_IsActive)
 	bool bIsActive;
 
 	UFUNCTION()
 	void Active_TimeElapsed();
 
 	void Deactive();
+
+	UFUNCTION()
+	void OnRep_IsActive();
+
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
 
 };
