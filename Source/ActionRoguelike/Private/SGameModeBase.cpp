@@ -10,6 +10,8 @@
 #include "EngineUtils.h"
 #include "DrawDebugHelpers.h"
 #include "SPlayerState.h"
+#include <Kismet/GameplayStatics.h>
+#include <SSaveGame.h>
 
 
 static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("su.SpawnBots"), true, TEXT("Enable spawning of bots via timer."), ECVF_Cheat);
@@ -18,6 +20,15 @@ static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("su.SpawnBots"), true, TEXT
 ASGameModeBase::ASGameModeBase()
 {
 	SpawnTimerInterval = 2.0f;
+
+	SlotName = "SaveGame01";
+}
+
+void ASGameModeBase::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
+{
+	Super::InitGame(MapName, Options, ErrorMessage);
+
+	LoadSaveGame();
 }
 
 void ASGameModeBase::StartPlay()
@@ -123,4 +134,28 @@ void ASGameModeBase::OnActorKilled(AActor* VictimActor, AActor* Killer)
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("OnActorKilled: Victim: %s, Killer: %s"), *GetNameSafe(VictimActor), *GetNameSafe(Killer));
+}
+
+void ASGameModeBase::WriteSaveGame()
+{
+	UGameplayStatics::SaveGameToSlot(CurrentSaveGame, SlotName, 0);
+}
+
+void ASGameModeBase::LoadSaveGame()
+{
+	if (UGameplayStatics::DoesSaveGameExist(SlotName, 0)) {
+		CurrentSaveGame = Cast<USSaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, 0));
+
+		if (CurrentSaveGame == nullptr) {
+			UE_LOG(LogTemp, Warning, TEXT("Failed to load SaveGame Data."));
+			return;
+		}
+
+		UE_LOG(LogTemp, Log, TEXT("Loaded SaveGame Data."));
+	}
+	else {
+		CurrentSaveGame = Cast<USSaveGame>(UGameplayStatics::CreateSaveGameObject(USSaveGame::StaticClass()));
+
+		UE_LOG(LogTemp, Log, TEXT("Created New SaveGame Data."));
+	}
 }
