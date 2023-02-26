@@ -41,6 +41,9 @@ protected:
 
 	USWorldUserWidget* ActiveHealthBar;
 
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UUserWidget> SpottedWidgetClass;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USActionComponent* ActionComp;
 
@@ -48,5 +51,7 @@ protected:
 	void OnPawnSeen(APawn* Pawn);
 
 	void SetTargetActor(AActor* NewTarget);
+
+	AActor* GetTargetActor();
 
 };

@@ -14,6 +14,9 @@ class ACTIONROGUELIKE_API USActionEffect_ThornsBuff : public USActionEffect
 {
 	GENERATED_BODY()
 
+protected:
+	float ReflectFraction;
+
 public:
 	USActionEffect_ThornsBuff();
 
@@ -21,6 +24,6 @@ public:
 
 	void StopAction_Implementation(AActor* Instigator) override;
 
-	void ExecutePeriodicEffect_Implementation(AActor* Instigator) override;
+	void OnHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta, float NewRage);
 	
 };
