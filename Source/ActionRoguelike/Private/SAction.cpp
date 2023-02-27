@@ -6,6 +6,7 @@
 #include <GameplayTagContainer.h>
 #include "../ActionRoguelike.h"
 #include <Net/UnrealNetwork.h>
+#include "SActionComponent.h"
 
 void USAction::Initialize(USActionComponent* NewActionComp)
 {
@@ -22,6 +23,12 @@ void USAction::StartAction_Implementation(AActor* Instigator)
 
 	RepData.bIsRunning = true;
 	RepData.Instigator = Instigator;
+
+	if (GetOwningComponent()->GetOwnerRole() == ROLE_Authority) {
+		TimeStarted = GetWorld()->TimeSeconds;
+	}
+
+	GetOwningComponent()->OnActionStarted.Broadcast(GetOwningComponent(), this);
 }
 
 void USAction::StopAction_Implementation(AActor* Instigator)
@@ -36,6 +43,8 @@ void USAction::StopAction_Implementation(AActor* Instigator)
 
 	RepData.bIsRunning = false;
 	RepData.Instigator = Instigator;
+
+	GetOwningComponent()->OnActionStopped.Broadcast(GetOwningComponent(), this);
 }
 
 USActionComponent* USAction::GetOwningComponent() const
@@ -95,4 +104,5 @@ void USAction::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetime
 
 	DOREPLIFETIME_WITH_PARAMS_FAST(USAction, RepData, SharedParams);
 	DOREPLIFETIME_WITH_PARAMS_FAST(USAction, ActionComp, SharedParams);
+	DOREPLIFETIME_WITH_PARAMS_FAST(USAction, TimeStarted, SharedParams);
 }
