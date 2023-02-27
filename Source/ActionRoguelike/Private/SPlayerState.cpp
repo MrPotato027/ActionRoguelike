@@ -3,6 +3,7 @@
 
 #include "SPlayerState.h"
 #include <Net/UnrealNetwork.h>
+#include "SSaveGame.h"
 
 int32 ASPlayerState::GetCredits()
 {
@@ -17,6 +18,20 @@ void ASPlayerState::SetCredits(int32 Value)
 void ASPlayerState::AddCredits(int32 Value)
 {
 	Credits = FMath::Clamp(Credits + Value, 0, 1000);
+}
+
+void ASPlayerState::SavePlayerState_Implementation(USSaveGame* SaveObject)
+{
+	if (SaveObject) {
+		SaveObject->Credits = Credits;
+	}
+}
+
+void ASPlayerState::LoadPlayerState_Implementation(USSaveGame* SaveObject)
+{
+	if (SaveObject) {
+		Credits = SaveObject->Credits;
+	}
 }
 
 void ASPlayerState::OnRep_Credits()

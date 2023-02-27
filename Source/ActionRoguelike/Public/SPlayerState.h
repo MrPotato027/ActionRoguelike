@@ -6,6 +6,8 @@
 #include "GameFramework/PlayerState.h"
 #include "SPlayerState.generated.h"
 
+class USSaveGame;
+
 /**
  * 
  */
@@ -27,6 +29,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void AddCredits(int32 Value = 1);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void SavePlayerState(USSaveGame* SaveObject);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void LoadPlayerState(USSaveGame* SaveObject);
 
 	UFUNCTION()
 	virtual void OnRep_Credits();
