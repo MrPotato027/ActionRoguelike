@@ -30,13 +30,14 @@ void ASPlayerState::SavePlayerState_Implementation(USSaveGame* SaveObject)
 void ASPlayerState::LoadPlayerState_Implementation(USSaveGame* SaveObject)
 {
 	if (SaveObject) {
-		Credits = SaveObject->Credits;
+		//Credits = SaveObject->Credits;
+		AddCredits(SaveObject->Credits);
 	}
 }
 
-void ASPlayerState::OnRep_Credits()
+void ASPlayerState::OnRep_Credits(int32 OldCredits)
 {
-
+	OnCreditsChanged.Broadcast(this, Credits, Credits - OldCredits);
 }
 
 void ASPlayerState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const

@@ -6,6 +6,8 @@
 #include "GameFramework/PlayerState.h"
 #include "SPlayerState.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnCreditsChanged, ASPlayerState*, PlayerState, int32, NewCredits, int32, Delta);
+
 class USSaveGame;
 
 /**
@@ -30,6 +32,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AddCredits(int32 Value = 1);
 
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnCreditsChanged OnCreditsChanged;
+
 	UFUNCTION(BlueprintNativeEvent)
 	void SavePlayerState(USSaveGame* SaveObject);
 
@@ -37,7 +42,7 @@ public:
 	void LoadPlayerState(USSaveGame* SaveObject);
 
 	UFUNCTION()
-	virtual void OnRep_Credits();
+	virtual void OnRep_Credits(int32 OldCredits);
 
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
 	
