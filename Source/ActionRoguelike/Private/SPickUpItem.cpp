@@ -21,6 +21,11 @@ void ASPickUpItem::Interact_Implementation(APawn* InstigatorPawn)
 
 }
 
+FText ASPickUpItem::GetInteractText_Implementation(APawn* InstigatorPawn)
+{
+	return FText();
+}
+
 void ASPickUpItem::Active_TimeElapsed()
 {
 	//Mesh->SetVisibility(true);
